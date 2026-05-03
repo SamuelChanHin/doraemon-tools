@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="manifest" href="/js/pwa.webmanifest">
+    <link rel="apple-touch-icon" sizes="512x512" href="assets/img/512x512.png" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+        integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;500&display=swap" rel="stylesheet" />
+    <link href="index.css" rel="stylesheet" />
+    <title>Doraemon</title>
+</head>
+
+<body>
+
+    <div id="loaderContainer">
+        <div class="loader"></div>
+    </div>
+
+    <div id="container">
+        <header>
+            <div id="navbar">
+                <span id="toolCount"></span>
+                <button id="displayModeToggle">
+                    <i class="fa-solid fa-list"></i>
+                </button>
+            </div>
+        </header>
+        <div id="content">
+            <div id="singleMode">
+                <div id="toolContainer"></div>
+                <div id="refetchButtonContainer">
+                    <div id="refetchBell"></div>
+                    <button id="refetchButton">
+                        <i class="fa-solid fa-rotate"></i>
+                    </button>
+                </div>
+
+            </div>
+            <div id="multipleMode" class="off">
+                <div id="toolsContainer"></div>
+                <div class="center">
+                    <div class="smallLoader"></div>
+                </div>
+                <button id="backToTopButton" class="opacity">
+                    Top
+                </button>
+            </div>
+        </div>
+        <footer>
+            <div id="bottomNavigation">
+                <button id="toolNavigation" name="TOOL" class="navigationItem activeItem">
+                    <i class="fa-solid fa-gear"></i>
+                </button>
+                <button id="movieNavigation" name="MOVIE" class="navigationItem">
+                    <i class="fa-solid fa-film"></i>
+                </button>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const convertStyle = () => {
+            document.body.style.setProperty('height', `${window.innerHeight}px`);
+        }
+
+        window.addEventListener("resize", convertStyle);
+        window.addEventListener("DOMContentLoaded", convertStyle);
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/loadjs/4.2.0/loadjs.min.js"
+        integrity="sha512-kA5njTcOKIwpz6cEPl//I31UH3ivohgL+WSVjdO/iMQWbuzHqxuAdPjRvLEHXTa+M/4AtZNMI6aOEvBtOof7Iw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.2.1/axios.min.js"></script>
+    <script src="./utils/localStorage.js" type="module"></script>
+    <script src="./api/apiClient.js" type="module"></script>
+    <script src="./api/doraemonApi.js" type="module"></script>
+    <script src="./element.js" type="module"></script>
+    <script src="./index.js" type="module"></script>
+    <script src="./main.js" type="module"></script>
+    <script src="/js/pwa.js"></script>
+    <script src="/js/status.js"></script>
+</body>
+
+</html>

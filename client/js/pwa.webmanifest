@@ -1,0 +1,16 @@
+{
+  "name": "Doraemon",
+  "short_name": "四次元ポケット",
+  "description": "四次元ポケット",
+  "start_url": "/",
+  "display": "fullscreen",
+  "theme_color": "#764ABC",
+  "background_color": "#764ABC",
+  "icons": [
+    {
+      "src": "../assets/img/512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
