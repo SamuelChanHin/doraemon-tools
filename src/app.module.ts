@@ -25,7 +25,9 @@ const staticModuleImport = !isVercelDeployment
       }),
     ]
   : [];
-const scheduleModuleImport = !isVercelDeployment ? [ScheduleModule.forRoot()] : [];
+const scheduleModuleImport = !isVercelDeployment
+  ? [ScheduleModule.forRoot()]
+  : [];
 
 @Module({
   imports: [
