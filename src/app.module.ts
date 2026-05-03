@@ -10,12 +10,26 @@ import { DoraemonToolModule } from './doraemon-tool/doraemon-tool.module';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { Tools, Movies } from 'db-schema';
 import { DoraemonMovieModule } from './doraemon-movie/doraemon-movie.module';
-import { TaskModule } from './tasks/task.module';
 import { ScheduleModule } from '@nestjs/schedule';
+
+const isVercelDeployment = process.env.VERCEL === '1';
+const enableScheduledTasks =
+  process.env.TASK_ENABLE === 'true' && !isVercelDeployment;
+const taskModuleImport = enableScheduledTasks
+  ? [require('./tasks/task.module').TaskModule.register()]
+  : [];
+const staticModuleImport = !isVercelDeployment
+  ? [
+      ServeStaticModule.forRoot({
+        rootPath: join(process.cwd(), 'client'),
+      }),
+    ]
+  : [];
+const scheduleModuleImport = !isVercelDeployment ? [ScheduleModule.forRoot()] : [];
 
 @Module({
   imports: [
-    TaskModule,
+    ...taskModuleImport,
     DoraemonMovieModule,
     DoraemonToolModule,
     TypeOrmModule.forRoot({
@@ -25,10 +39,8 @@ import { ScheduleModule } from '@nestjs/schedule';
       synchronize: false,
       namingStrategy: new SnakeNamingStrategy(),
     }),
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'client'),
-    }),
-    ScheduleModule.forRoot(),
+    ...staticModuleImport,
+    ...scheduleModuleImport,
   ],
   controllers: [AppController],
   providers: [
