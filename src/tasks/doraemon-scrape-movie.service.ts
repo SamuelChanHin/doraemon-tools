@@ -1,8 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { CronJob } from 'cron';
-import { TASK_CRON_EXPRESSION, TASK_NAME } from 'src/common/constant/task';
-import { DoraemonScrapService } from 'src/services/doraemon-scrap.service';
+import { TASK_CRON_EXPRESSION, TASK_NAME } from '..//common/constant/task';
+import { DoraemonScrapService } from '../services/doraemon-scrap.service';
 import { DoraemonMovieService } from '../doraemon-movie/doraemon-movie.service';
 import { RedisService } from '../redis/redis.service';
 import { CACHE_KEY_PREFIX } from '../common/constant/cache.enum';
