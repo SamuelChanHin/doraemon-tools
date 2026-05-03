@@ -17,9 +17,9 @@ import { DoraemonScrapService } from 'src/services/doraemon-scrap.service';
 import {
   CustomCacheDeleteInterceptor,
   CustomCacheInterceptor,
-} from 'src/common/interceptors/cache.interceptor';
+} from '../common/interceptors/cache.interceptor';
 import { CustomCacheSetPatternInterceptor } from '../common/interceptors/cache.interceptor';
-import { CACHE_KEY_PREFIX } from 'src/common/constant/cache.enum';
+import { CACHE_KEY_PREFIX } from '../common/constant/cache.enum';
 
 @Controller('movie')
 export class DoraemonMovieController {

@@ -18,8 +18,8 @@ import {
   CustomCacheDeleteInterceptor,
   CustomCacheInterceptor,
   CustomCacheSetPatternInterceptor,
-} from 'src/common/interceptors/cache.interceptor';
-import { CACHE_KEY_PREFIX } from 'src/common/constant/cache.enum';
+} from '../common/interceptors/cache.interceptor';
+import { CACHE_KEY_PREFIX } from '../common/constant/cache.enum';
 
 @Controller('tool')
 export class DoraemonToolController {
