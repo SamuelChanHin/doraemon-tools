@@ -2,5 +2,5 @@
   "framework": "nextjs",
   "buildCommand": "yarn build",
   "devCommand": "next dev",
-  "installCommand": "yarn install",
+  "installCommand": "yarn install"
 }
