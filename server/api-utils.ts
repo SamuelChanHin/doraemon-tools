@@ -15,11 +15,9 @@ export function errorResponse(err: Record<string, string>, status = 500) {
 }
 
 export async function invalidateKeys(keys: string[]) {
-  for (const k of keys) {
-    try {
-      await cache.del(k);
-    } catch (e) {
-      // ignore
-    }
+  try {
+    await cache.del(keys);
+  } catch (e) {
+    // ignore
   }
 }
