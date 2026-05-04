@@ -28,9 +28,15 @@ export const cache = {
     memoryCache.set(key, value);
     if (ttlSec) setTimeout(() => memoryCache.delete(key), ttlSec * 1000);
   },
-  async del(key: string) {
+  async del(key: string[]) {
     const r = getRedis();
     if (r) return await r.del(key);
-    memoryCache.delete(key);
+    key.forEach(k => memoryCache.delete(k));
   },
+  async keys(pattern: string) : Promise<string[]>{
+    const r = getRedis();
+    if (r) return await r.keys(pattern);
+    const regex = new RegExp('^' + pattern.replace(/\*/g, '.*') + '$');
+    return Array.from(memoryCache.keys()).filter(k => regex.test(k));
+  }
 };

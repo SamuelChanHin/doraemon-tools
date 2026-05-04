@@ -43,7 +43,6 @@ export async function insertTools(items: Tools[]) {
 }
 
 export async function scrapeToolsFromSource(page = 1) {
-  // Placeholder: implement scraping logic or call external scraper here.
-  // Currently returns empty array to indicate no-op.
-  return [];
+  const { DoraemonScrapService } = await import('./scrapService');
+  return await DoraemonScrapService.scrapeTools(page);
 }

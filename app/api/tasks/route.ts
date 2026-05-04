@@ -1,6 +1,5 @@
+import { DoraemonTaskService } from '@/server/services/taskService';
 import { NextResponse } from 'next/server';
-import { DoraemonTaskService } from '../../../../../server/services/taskService';
-import { invalidateKeys } from '../../../../../server/api-utils';
 
 export async function GET(request: Request) {
   try {
@@ -15,18 +14,23 @@ export async function GET(request: Request) {
       );
     }
 
-    // Run task in background
+    // Run all tasks in background
     (async () => {
       try {
-        await DoraemonTaskService.scrapeTools();
-        await invalidateKeys(['DORAEMON_TOOL_COUNT']);
+        console.log('[API] Starting full scraping task');
+        const result = await DoraemonTaskService.scrapeAll();
+        console.log('[API] Full scraping task completed:', result);
       } catch (error) {
-        console.error('Background tool scraping failed:', error);
+        console.error('[API] Background scraping failed:', error);
       }
     })();
 
     return NextResponse.json(
-      { statusCode: 202, success: true, message: 'Tool scraping task started' },
+      {
+        statusCode: 202,
+        success: true,
+        message: 'All scraping tasks started (movies and tools)',
+      },
       { status: 202 }
     );
   } catch (error: any) {
@@ -37,6 +41,7 @@ export async function GET(request: Request) {
   }
 }
 
+// Keep POST as proxy for compatibility
 export async function POST(request: Request) {
   return GET(request);
 }
