@@ -1,12 +1,20 @@
-function handleResponse(res: Response) {
-  if (!res.ok) {
-    return res.json().then((body) => {
-      const err = new Error(body.message || "API Error");
-      err.status = body.statusCode || res.status;
-      throw err;
-    });
+class ApiError extends Error {
+  status: number;
+  constructor(message: string, status: number) {
+    super(message);
+    this.status = status;
+    Object.setPrototypeOf(this, ApiError.prototype);
   }
-  return res.json();
+}
+
+async function handleResponse(res: Response) {
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) {
+    const message = (body && body.message) || "API Error";
+    const status = (body && body.statusCode) || res.status;
+    throw new ApiError(message, status);
+  }
+  return body;
 }
 
 export async function getDoraemonTools(params: any) {

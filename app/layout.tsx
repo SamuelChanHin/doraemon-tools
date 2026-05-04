@@ -22,20 +22,20 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="manifest" href="/manifest.json" />
-        {/* <link
+        <link
           rel="stylesheet"
           type="text/css"
           href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
-        /> */}
+        />
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
           integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
-          crossorigin="anonymous"
-          referrerpolicy="no-referrer"
+          crossOrigin="anonymous"
+          referrerPolicy="no-referrer"
         />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        {/* <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /> */}
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@200;500&display=swap"
           rel="stylesheet"
