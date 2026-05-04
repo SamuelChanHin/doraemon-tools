@@ -1,0 +1,184 @@
+// Global Styles
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+}
+
+// Header and Navigation
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.singleMode,
+.multipleMode {
+  height: 100%;
+  width: 100%;
+}
+
+.toolContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+}
+.toolsContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  padding: 12px;
+  overflow: hidden;
+}
+@media screen and (max-width: 728px) {
+  .toolsContainer,
+  .toolContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+}
+.toolContainer > .card {
+  width: 40%;
+  min-width: 343px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin: 4px;
+}
+
+.cardTitle {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.cardDescription {
+  font-size: 12px;
+}
+
+.cardImageContainer {
+  border-radius: 12px;
+  display: block;
+  position: relative;
+  padding-top: 66.7%;
+  background: black;
+}
+
+.cardImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+}
+
+.refetchButton {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #f1d934;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
+  border: none;
+  font-size: 18px;
+}
+
+.refetchButtonContainer {
+  display: flex;
+  justify-content: center;
+  position: relative;
+  height: 100px;
+  width: 100%;
+}
+
+.refetchBell {
+  height: 24px;
+  background-color: #ce0128;
+  border-radius: 8px;
+  width: 100%;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.26);
+}
+
+.refetchButton {
+  position: absolute;
+  top: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 16px;
+  color: black;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.26);
+  background-color: #f1d934;
+}
+
+// Back-to-Top Button
+.backToTopButton {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  position: absolute;
+  right: 12px;
+  bottom: 60px;
+  transition: all 0.5s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  background-color: #03a1d050;
+}
+
+.off {
+  display: none;
+}
+
+.opacity {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+// Footer and Navigation
+.footer {
+  background-color: #f6f6f6;
+  height: 50px;
+}
+
+.bottomNavigation {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.navigationItem {
+  flex: 1;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24px;
+}
+
+.activeItem {
+  background-color: #03a1d0;
+  color: #f6f6f6;
+}
