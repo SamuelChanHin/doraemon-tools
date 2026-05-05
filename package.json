@@ -25,6 +25,7 @@
     "typeorm-naming-strategies": "^4.1.0"
   },
   "devDependencies": {
+    "@tanstack/react-query-devtools": "5.100.9",
     "@tailwindcss/postcss": "^4",
     "@types/cheerio": "^1.0.0",
     "@types/node": "^20",

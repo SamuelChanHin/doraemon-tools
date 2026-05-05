@@ -1,5 +1,6 @@
 import { PageType } from "@/components/pages/Home";
 import { getDoraemonMovieCount, getDoraemonToolCount } from "@/lib/api";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 type Props = {
@@ -8,36 +9,43 @@ type Props = {
 
 function useItemCount({ page }: Props) {
   const [count, setCount] = useState<number>(0);
-  const [loading, setLoading] = useState(false);
 
   const reset = () => {
     setCount(0);
-    setLoading(false);
   };
 
-  async function fetchCount() {
-    setLoading(true);
-    try {
+  const query = useQuery({
+    queryKey: ["item-count", page],
+    queryFn: async () => {
       if (page === "TOOL") {
-        const r = await getDoraemonToolCount();
-        setCount(r.data || 0);
-      } else {
-        const r = await getDoraemonMovieCount();
-        setCount(r.data || 0);
+        const response = await getDoraemonToolCount();
+        return response.data || 0;
       }
-    } catch (e) {
-      console.error(e);
-      alert("Failed to fetch count");
-    } finally {
-      setLoading(false);
-    }
-  }
+
+      const response = await getDoraemonMovieCount();
+      return response.data || 0;
+    },
+    retry: false,
+  });
 
   useEffect(() => {
-    fetchCount();
-  }, [page]);
+    if (query.data !== undefined) {
+      setCount(query.data);
+    }
+  }, [query.data]);
 
-  return { count, loading, reset };
+  useEffect(() => {
+    if (query.error) {
+      console.error(query.error);
+      alert("Failed to fetch count");
+    }
+  }, [query.error]);
+
+  return {
+    count,
+    loading: query.isFetching,
+    reset,
+  };
 }
 
 export default useItemCount;

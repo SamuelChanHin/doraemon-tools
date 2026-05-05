@@ -1,17 +1,24 @@
 import QueryProvider from "@/components/QueryProvider";
 import "./globals.css";
+// import "reflect-metadata";
 
 export const metadata = {
   title: "Doraemon",
   description: "Doraemon Tools and Movies",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+  // viewport moved to `export const viewport` per Next.js recommendations
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
   },
   icons: {
-    apple: "/apple-touch-icon.png",
+    apple: "/512x512.png",
   },
+};
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
@@ -44,7 +51,7 @@ export default function RootLayout({
         <meta charSet="UTF-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <QueryProvider>{children}</QueryProvider>
       </body>
     </html>

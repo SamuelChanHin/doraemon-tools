@@ -2,6 +2,7 @@ import { PageType } from "@/components/pages/Home";
 import { getDoraemonMovieByRandom, getDoraemonToolByRandom } from "@/lib/api";
 import { Movies } from "@/server/database/entity/movie";
 import { Tools } from "@/server/database/entity/tools";
+import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 
 type Props = {
@@ -9,41 +10,42 @@ type Props = {
 };
 
 function useItemRandom({ page }: Props) {
-  const [loading, setLoading] = useState(false);
   const [randomItem, setRandomItem] = useState<(Tools | Movies) | null>(null);
 
   const reset = () => {
     setRandomItem(null);
-    setLoading(false);
   };
 
-  async function fetchRandomItem() {
-    setLoading(true);
-    try {
+  const query = useQuery({
+    queryKey: ["item-random", page],
+    queryFn: async () => {
       if (page === "TOOL") {
-        const r = await getDoraemonToolByRandom();
-        setRandomItem(r.data || []);
-      } else {
-        const r = await getDoraemonMovieByRandom();
-        setRandomItem(r.data || []);
+        const response = await getDoraemonToolByRandom();
+        return response.data || null;
       }
-    } catch (e) {
-      console.error(e);
-      alert("Failed to fetch count");
-    } finally {
-      setLoading(false);
-    }
-  }
+
+      const response = await getDoraemonMovieByRandom();
+      return response.data || null;
+    },
+    retry: false,
+  });
 
   useEffect(() => {
-    fetchRandomItem();
-  }, [page]);
+    setRandomItem(query.data || null);
+  }, [query.data]);
+
+  useEffect(() => {
+    if (query.isError) {
+      console.error(query.error);
+      alert("Failed to fetch random item");
+    }
+  }, [query.error, query.isError]);
 
   return {
     randomItem,
-    loading,
+    loading: query.isFetching,
     reset,
-    refetch: fetchRandomItem,
+    refetch: () => query.refetch()
   };
 }
 

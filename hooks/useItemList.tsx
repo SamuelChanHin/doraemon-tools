@@ -32,6 +32,7 @@ function useItemList({ page }: Props) {
             : await getDoraemonMovies(params);
         return (r.data || []) as (Tools | Movies)[];
       },
+      staleTime: 5 * 60 * 1000, // 5 minutes
     })),
   });
 
