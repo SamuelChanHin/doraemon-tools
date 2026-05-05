@@ -2,57 +2,62 @@ import { PageType } from "@/components/pages/Home";
 import { getDoraemonMovies, getDoraemonTools } from "@/lib/api";
 import { Movies } from "@/server/database/entity/movie";
 import { Tools } from "@/server/database/entity/tools";
-import React, { useEffect, useRef, useState } from "react";
+import { useQueries } from "@tanstack/react-query";
+import { useMemo, useState } from "react";
 
 type Props = {
   page: PageType;
 };
 
 function useItemList({ page }: Props) {
-  const [loading, setLoading] = useState(false);
-  const [list, setList] = useState<(Tools | Movies)[]>([]);
-  const listPage = useRef(1);
+  const [maxPage, setMaxPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState<PageType>(page);
 
-  const reset = () => {
-    setList([]);
-    listPage.current = 1;
-    setLoading(false);
-    loadMore();
-  };
-
-  async function loadMore() {
-    try {
-      setLoading(true);
-      const params = { page: listPage.current, pageSize: 10 };
-      let r;
-      if (page === "TOOL") r = await getDoraemonTools(params);
-      else r = await getDoraemonMovies(params);
-      const items = r.data || [];
-      if (items.length > 0) {
-        setList((s) => s.concat(items));
-        listPage.current += 1;
-      }
-    } catch (e) {
-      console.error(e);
-      alert("Failed to load more");
-    } finally {
-      setLoading(false);
-    }
+  // Derived state: reset when page type changes (runs synchronously during render)
+  if (currentPage !== page) {
+    setCurrentPage(page);
+    setMaxPage(1);
   }
 
-  useEffect(() => {
-    loadMore();
-  }, []);
+  const pageNumbers = Array.from({ length: maxPage }, (_, i) => i + 1);
 
-  useEffect(() => {
-    reset();
-  }, [page]);
+  const results = useQueries({
+    queries: pageNumbers.map((pageNum) => ({
+      queryKey: [`${page}-${pageNum}`],
+      queryFn: async () => {
+        const params = { page: pageNum, pageSize: 10 };
+        const r =
+          page === "TOOL"
+            ? await getDoraemonTools(params)
+            : await getDoraemonMovies(params);
+        return (r.data || []) as (Tools | Movies)[];
+      },
+    })),
+  });
+
+  const list = useMemo(
+    () => results.flatMap((r) => r.data || []),
+    [results],
+  );
+
+  const isFetching = results.some((r) => r.isFetching);
+
+  const hasError = results.find((r) => r.error);
+  if (hasError?.error) {
+    console.error(hasError.error);
+  }
+
+  const loadMore = () => {
+    if (!isFetching) {
+      setMaxPage((prev) => prev + 1);
+    }
+  };
 
   return {
     list,
     loadMore,
-    loading,
-    reset,
+    loading: isFetching,
+    error: hasError?.error ?? null,
   };
 }
 

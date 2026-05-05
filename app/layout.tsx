@@ -1,3 +1,4 @@
+import QueryProvider from "@/components/QueryProvider";
 import "./globals.css";
 
 export const metadata = {
@@ -43,7 +44,9 @@ export default function RootLayout({
         <meta charSet="UTF-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       </head>
-      <body>{children}</body>
+      <body>
+        <QueryProvider>{children}</QueryProvider>
+      </body>
     </html>
   );
 }
