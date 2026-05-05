@@ -4,8 +4,8 @@ import useItemList from "@/hooks/useItemList";
 import useItemRandom from "@/hooks/useItemRandom";
 import clsx from "clsx";
 import React, { useMemo, useRef, useState } from "react";
-import FullscreenLoader from "../FullscreenLoader";
 import Header from "../Header";
+import { BottomLoader, SkeletonCard } from "../LoadingState";
 import styles from "./Home.module.scss";
 
 export type DisplayMode = "SINGLE" | "MULTIPLE";
@@ -39,9 +39,11 @@ export default function Home() {
   });
 
   const isLoading = useMemo(
-    () => countLoading || randomLoading || listLoading,
-    [countLoading, randomLoading, listLoading],
+    () => countLoading || randomLoading,
+    [countLoading, randomLoading],
   );
+  const isInitialMultipleLoading = displayMode === "MULTIPLE" && listLoading && list.length === 0;
+  const isLoadingMore = displayMode === "MULTIPLE" && listLoading && list.length > 0;
 
   const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
     const target = e.currentTarget;
@@ -81,9 +83,6 @@ export default function Home() {
 
   return (
     <div className={styles.container}>
-      {/* Loader */}
-      {isLoading && <FullscreenLoader />}
-
       <Header count={count} switchMode={switchMode} />
 
       {/* Content */}
@@ -92,7 +91,9 @@ export default function Home() {
           <div className={clsx(styles.singleMode)}>
             <div className={styles.toolContainer}>
               <div className={styles.card}>
-                {randomItem && (
+                {(isLoading || !randomItem) ? (
+                  <SkeletonCard variant="single" />
+                ) : (
                   <>
                     <div className={styles.cardImageContainer}>
                       <img
@@ -133,21 +134,28 @@ export default function Home() {
             ref={multipleModeRef}
           >
             <div className={styles.toolsContainer}>
-              {list.map((it) => (
-                <div key={it.id} className={styles.card}>
-                  <div className={styles.cardImageContainer}>
-                    <img
-                      src={it.imageUrl}
-                      className={styles.cardImage}
-                      alt={it.nameTc || it.nameJp}
-                    />
-                  </div>
-                  <div className={styles.cardTitle}>
-                    {it.nameTc || it.nameJp}
-                  </div>
-                </div>
-              ))}
+              {isInitialMultipleLoading
+                ? Array.from({ length: 6 }, (_, i) => (
+                    <div key={`skeleton-${i}`} className={styles.card}>
+                      <SkeletonCard variant="grid" />
+                    </div>
+                  ))
+                : list.map((it) => (
+                    <div key={it.id} className={styles.card}>
+                      <div className={styles.cardImageContainer}>
+                        <img
+                          src={it.imageUrl}
+                          className={styles.cardImage}
+                          alt={it.nameTc || it.nameJp}
+                        />
+                      </div>
+                      <div className={styles.cardTitle}>
+                        {it.nameTc || it.nameJp}
+                      </div>
+                    </div>
+                  ))}
             </div>
+            {isLoadingMore && <BottomLoader />}
           </div>
         )}
       </main>
