@@ -133,7 +133,7 @@
   border-radius: 50%;
   position: absolute;
   right: 12px;
-  bottom: 60px;
+  bottom: calc(60px + var(--safe-area-bottom));
   transition: all 0.5s;
   display: flex;
   justify-content: center;
@@ -159,12 +159,13 @@
 // Footer and Navigation
 .footer {
   background-color: #f6f6f6;
-  height: 50px;
+  height: calc(50px + var(--safe-area-bottom));
+  padding-bottom: var(--safe-area-bottom);
 }
 
 .bottomNavigation {
   width: 100%;
-  height: 100%;
+  height: 50px;
   display: flex;
   align-items: center;
 }
